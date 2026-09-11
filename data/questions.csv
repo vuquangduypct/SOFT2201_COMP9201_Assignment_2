@@ -1,0 +1,4 @@
+id,text,format,topic,difficulty,learning_outcomes,status,estimated_minutes,tags,last_used,model_answer
+Q-2001,What does a Composite let clients treat uniformly?,short_answer,design_patterns,2,LO3,approved,4,composite|oop,2026-03-01,Leaves and composites expose the same component operation.
+Q-2002,Why should an undo command remember prior state?,short_answer,maintenance,2,LO2,approved,3,command|undo,,It must restore the actual previous state rather than assume a default.
+Q-2003,True or false: Factory Method can let subclasses choose a Product.,true_false,design_patterns,1,LO3,draft,2,factory_method,2026-06-30,True.

@@ -1,0 +1,9 @@
+{
+  "title": "Code Review Foundations Check",
+  "required_status": "approved",
+  "topics": ["testing", "code_review"],
+  "formats": ["short_answer", "code_reading"],
+  "difficulty": [1, 2, 3],
+  "exclude_ids": ["Q-1006", "Q-1007"],
+  "reuse_cooldown_days": 30
+}

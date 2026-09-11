@@ -1,0 +1,118 @@
+[
+  {
+    "id": " Q-1001 ",
+    "text": " Which statement best describes the Strategy pattern? ",
+    "options": [
+      "It selects an algorithm through a common interface.",
+      "It gives one object global access to every subsystem.",
+      "It stores every command as plain text."
+    ],
+    "model_answer": "Option 1. Strategy encapsulates interchangeable algorithms behind a common interface.",
+    "format": "Multiple_Choice",
+    "topic": "Design Patterns",
+    "difficulty": "2",
+    "learning_outcomes": ["LO3"],
+    "status": "Approved",
+    "estimated_minutes": "3",
+    "tags": [" strategy ", "OOP"],
+    "last_used": "2026-05-12"
+  },
+  {
+    "id": "Q-1002",
+    "text": "Identify one reason to review code before changing it.",
+    "model_answer": "Review establishes the existing contract and dependencies, reducing the chance that a locally reasonable change causes a regression elsewhere.",
+    "format": "short_answer",
+    "topic": "testing",
+    "difficulty": 1,
+    "learning_outcomes": ["LO2"],
+    "status": "approved",
+    "estimated_minutes": 4,
+    "tags": ["regression"],
+    "last_used": null
+  },
+  {
+    "id": "Q-1003",
+    "text": "True or false: duplicated validation logic is easy to change safely.",
+    "options": ["True", "False"],
+    "model_answer": "False. Duplicated validation can drift because every copy must be found and updated consistently.",
+    "format": "true_false",
+    "topic": "maintenance",
+    "difficulty": 1,
+    "learning_outcomes": ["LO1"],
+    "status": "draft",
+    "estimated_minutes": 2,
+    "tags": ["maintenance"],
+    "last_used": "2026-06-01"
+  },
+  {
+    "id": "Q-1004",
+    "text": "Read the code and identify the branch that handles malformed JSON input.",
+    "code": "try:\n    request = json.loads(payload)\nexcept json.JSONDecodeError:\n    return {\"error\": \"malformed request\"}\nreturn build_candidate_pool(questions, request)",
+    "model_answer": "The except json.JSONDecodeError branch handles malformed JSON and returns the error record before candidate construction runs.",
+    "format": "code_reading",
+    "topic": "testing",
+    "difficulty": 3,
+    "learning_outcomes": ["LO2"],
+    "status": "approved",
+    "estimated_minutes": 6,
+    "tags": ["code reading"],
+    "last_used": "2026-04-20"
+  },
+  {
+    "id": "Q-1005",
+    "text": "Which review evidence is strongest?",
+    "options": [
+      "A passing test that constructs unsupported data",
+      "A repository contract plus a test through the real workflow",
+      "A confident pull-request summary"
+    ],
+    "model_answer": "Option 2. Repository contracts and representative workflow tests provide evidence independent of the proposed implementation.",
+    "format": "multiple_choice",
+    "topic": "code_review",
+    "difficulty": 2,
+    "learning_outcomes": ["LO1"],
+    "status": "approved",
+    "estimated_minutes": 3,
+    "tags": [],
+    "last_used": "2026-06-20"
+  },
+  {
+    "id": "Q-1006",
+    "text": "Name a risk of swallowing exceptions during import.",
+    "model_answer": "A missing, unreadable, or malformed file can appear to be a valid empty question bank, hiding the real failure.",
+    "format": "short_answer",
+    "topic": "code_review",
+    "difficulty": 2,
+    "learning_outcomes": ["LO1"],
+    "status": "retired",
+    "estimated_minutes": 3,
+    "tags": ["exceptions"],
+    "last_used": "2026-02-15"
+  },
+  {
+    "id": "Q-1007",
+    "text": "Explain why tests should have strong assertions.",
+    "model_answer": "A strong assertion fixes the required outcome independently of the implementation.",
+    "format": "short_answer",
+    "topic": "testing",
+    "difficulty": 2,
+    "learning_outcomes": ["LO2"],
+    "status": "approved",
+    "estimated_minutes": 3,
+    "tags": ["tests"],
+    "last_used": "2026-06-10"
+  },
+  {
+    "id": "Q-1008",
+    "text": "Explain why tests should have strong assertions.",
+    "model_answer": "Assertions should state a stable expected result rather than derive the oracle from the implementation.",
+    "format": "short_answer",
+    "topic": "testing",
+    "difficulty": 2,
+    "learning_outcomes": ["LO2"],
+    "status": "approved",
+    "estimated_minutes": 3,
+    "tags": ["tests"],
+    "last_used": "2026-09-12"
+  }
+]
