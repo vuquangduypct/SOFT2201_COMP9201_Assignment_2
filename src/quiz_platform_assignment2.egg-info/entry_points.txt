@@ -1,0 +1,2 @@
+[console_scripts]
+quiz-bank = quiz_platform.question_bank.cli:main
