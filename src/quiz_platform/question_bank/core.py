@@ -179,15 +179,18 @@ def build_candidate_pool(
     report = empty_eligibility_report()
     eligible = []
 
-    rule = None  # ??? TODO construct the rule tree for this request
-    report["rule_expression"] = ""  # ??? TODO render the complete rule tree
+    # rule = None  ??? TODO construct the rule tree for this request
+    # report["rule_expression"] = "" ??? TODO render the complete rule tree
+    rule = rules_from_request(request, reference_date)
+    report["rule_expression"] = rule.render()
 
     for question in questions:
         report["considered"] += 1
         question_id = question.get("id")
         question["checked_on"] = reference_date or str(date.today())
 
-        reason = None  # ??? TODO evaluate the question through the rule tree
+        # reason = None ??? TODO evaluate the question through the rule tree
+        reason = rule.exclusion_reason(question)
         if reason is not None:
             report[f"excluded_by_{reason}"].append(question_id)
             continue

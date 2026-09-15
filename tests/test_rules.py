@@ -1,4 +1,4 @@
-import pytest
+import pytest  # pyright: ignore[reportMissingImports]
 
 from quiz_platform.question_bank import (
     AllOfRule,

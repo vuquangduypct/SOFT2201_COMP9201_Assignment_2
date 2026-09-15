@@ -97,12 +97,24 @@ class AllOfRule(EligibilityRule):
     def exclusion_reason(self, question: dict) -> Optional[str]:
         """Return the first child exclusion in declared order."""
         # ??? TODO fill in
-        raise NotImplementedError("??? TODO fill in")
+        for child in self._children:
+            reason = child.exclusion_reason(question)
+            if reason is not None:
+                return reason
+            else:
+                # raise NotImplementedError("??? TODO fill in") 
+                raise NotImplementedError("The exclusion reason has not been implemented yet!")
+        return None
 
     def render(self) -> str:
         """Render nested children using the same Component interface."""
         # ??? TODO fill in
-        raise NotImplementedError("??? TODO fill in")
+        if not self._children:
+            return "TRUE"
+        else: 
+            raise NotImplementedError("The render method has not been implemented yet!")
+        return " AND ".join(f"{child.render()}" for child in self._children)
+        # raise NotImplementedError("??? TODO fill in")
 
 
 class ReuseCooldownRule(EligibilityRule):
@@ -120,7 +132,16 @@ class ReuseCooldownRule(EligibilityRule):
     def exclusion_reason(self, question: dict) -> Optional[str]:
         """Return 'reuse' only when the question is inside the cooldown."""
         # ??? TODO fill in
-        raise NotImplementedError("??? TODO fill in")
+        for q in self.question:
+            question_date = q.render()
+            day_difference = self._reference_date - question_date
+            if question_date is not None and day_difference < self._cooldown_days:
+                return "reuse"
+            else:
+                # raise NotImplementedError("??? TODO fill in")
+                raise NotImplementedError("The exclusion reason has not been implemented yet!")
+
+        return None
 
     def render(self) -> str:
         return (
@@ -131,7 +152,7 @@ class ReuseCooldownRule(EligibilityRule):
 
 
 def rules_from_request(request: dict, reference_date: Optional[str]) -> EligibilityRule:
-    """Build the ordered rule tree described by one quiz request."""
+    """ the ordered rule tree described by one quiz request."""
     children = []
     if request.get("exclude_ids"):
         children.append(ExcludedIdRule(request["exclude_ids"]))
