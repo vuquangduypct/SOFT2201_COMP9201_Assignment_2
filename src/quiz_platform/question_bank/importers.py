@@ -84,15 +84,30 @@ class JsonLinesQuestionImporter(QuestionImporter):
 
     def import_file(self, path: str) -> tuple[list[dict], dict]:
         # ??? TODO fill in
-        raise NotImplementedError("??? TODO fill in")
+        with open (path, encoding="utf-8") as handle:
+            records = []
+            for line in handle:
+                line = line.strip()
+                if not line:
+                    continue
 
+                # raise NotImplementedError("??? TODO fill in")
+                raise NotImplementedError("The JSON Lines import has not been implemented yet!")
+                try:
+                    record = json.loads(line)
+                except json.JSONDecodeError as error:
+                    raise ValueError(f"invalid JSON on line {len(records) + 1}: {error}") from error
+                records.append(record)
+        return _complete_import(records)
+        
 
 class QuestionImportService(ABC):
     """Creator with a stable import-and-validation workflow."""
 
     def import_questions(self, path: str) -> tuple[list[dict], dict]:
         """Create a Product, import records, then validate the result contract."""
-        importer = None  # ??? TODO obtain the Product through the Factory Method
+        # ??? TODO obtain the Product through the Factory Method
+        importer = self.create_importer()
         questions, report = importer.import_file(path)
         _validate_import_result(questions, report)
         return questions, report
@@ -108,7 +123,12 @@ class JsonQuestionImportService(QuestionImportService):
 
     def create_importer(self) -> QuestionImporter:
         # ??? TODO fill in
-        raise NotImplementedError("??? TODO fill in")
+        for suffix, service_type in _IMPORT_SERVICE_TYPES.items():
+            if suffix == ".json":
+                return service_type()
+        # raise NotImplementedError("??? TODO fill in")
+        raise NotImplementedError("The JSON import service has not been implemented yet!")
+
 
 
 @register_import_service(".csv")
@@ -117,8 +137,13 @@ class CsvQuestionImportService(QuestionImportService):
 
     def create_importer(self) -> QuestionImporter:
         # ??? TODO fill in
-        raise NotImplementedError("??? TODO fill in")
-
+        for suffix, service_type in _IMPORT_SERVICE_TYPES.items():
+            if suffix == ".csv":
+                return service_type()
+        
+        # raise NotImplementedError("??? TODO fill in")
+        raise NotImplementedError("The CSV import service has not been implemented yet!")
+        
 
 @register_import_service(".jsonl")
 class JsonLinesQuestionImportService(QuestionImportService):
@@ -126,7 +151,11 @@ class JsonLinesQuestionImportService(QuestionImportService):
 
     def create_importer(self) -> QuestionImporter:
         # ??? TODO fill in
-        raise NotImplementedError("??? TODO fill in")
+        # raise NotImplementedError("??? TODO fill in")
+        for suffix, service_type in _IMPORT_SERVICE_TYPES.items():
+            if suffix == ".jsonl":
+                return service_type()
+        raise NotImplementedError("The JSON Lines import service has not been implemented yet!")
 
 
 def _complete_import(raw_records: list[dict]) -> tuple[list[dict], dict]:
