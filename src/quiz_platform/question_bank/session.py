@@ -33,7 +33,7 @@ class QuestionBankSession:
     @property
     def can_undo(self) -> bool:
         # ??? TODO fill in
-        raise NotImplementedError("??? TODO fill in")
+        return bool(self._command_history)
 
     def _replace_questions(self, questions: Iterable[dict]) -> None:
         copied = {}
@@ -55,14 +55,7 @@ class QuestionBankSession:
             raise KeyError(f"unknown question ID: {question_id}")
         self._questions[question_id]["status"] = status
 
-    def _record_moderation(
-        self,
-        operation: str,
-        action: str,
-        question_id: str,
-        from_status: str,
-        to_status: str,
-    ) -> None:
+    def _record_moderation(self, operation: str, action: str, question_id: str, from_status: str, to_status: str) -> None:
         self._activity_log.append(
             {
                 "operation": operation,
@@ -88,7 +81,11 @@ class QuestionBankSession:
     def execute(self, command: ModerationCommand) -> None:
         """Execute a new command and retain it in history."""
         # ??? TODO fill in
-        raise NotImplementedError("??? TODO fill in")
+        if not isinstance(command, ModerationCommand):
+            raise TypeError("command must be a ModerationCommand instance")
+
+        command.execute()
+        self._command_history.append(command)
 
     def approve_question(self, question_id: str) -> None:
         self.execute(ApproveQuestionCommand(self, question_id))
@@ -101,11 +98,13 @@ class QuestionBankSession:
         if not self._command_history:
             return False
 
-        command = None  # ??? TODO remove the most recent command
+        # ??? TODO remove the most recent command
+        command = self._command_history.pop()
         try:
             command.undo()
         except Exception:
             # ??? TODO we have to preserve history when undo fails
+            self._command_history.append(command)
             raise
         return True
 

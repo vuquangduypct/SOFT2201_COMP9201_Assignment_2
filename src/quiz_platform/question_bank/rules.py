@@ -101,9 +101,6 @@ class AllOfRule(EligibilityRule):
             reason = child.exclusion_reason(question)
             if reason is not None:
                 return reason
-            else:
-                # raise NotImplementedError("??? TODO fill in") 
-                raise NotImplementedError("The exclusion reason has not been implemented yet!")
         return None
 
     def render(self) -> str:
@@ -111,10 +108,7 @@ class AllOfRule(EligibilityRule):
         # ??? TODO fill in
         if not self._children:
             return "TRUE"
-        else: 
-            raise NotImplementedError("The render method has not been implemented yet!")
-        return " AND ".join(f"{child.render()}" for child in self._children)
-        # raise NotImplementedError("??? TODO fill in")
+        return "(" + " AND ".join(child.render() for child in self._children) + ")"
 
 
 class ReuseCooldownRule(EligibilityRule):
@@ -131,16 +125,16 @@ class ReuseCooldownRule(EligibilityRule):
 
     def exclusion_reason(self, question: dict) -> Optional[str]:
         """Return 'reuse' only when the question is inside the cooldown."""
-        # ??? TODO fill in
-        for q in self.question:
-            question_date = q.render()
-            day_difference = self._reference_date - question_date
-            if question_date is not None and day_difference < self._cooldown_days:
-                return "reuse"
-            else:
-                # raise NotImplementedError("??? TODO fill in")
-                raise NotImplementedError("The exclusion reason has not been implemented yet!")
-
+        last_used = question.get("last_used")
+        if last_used is None:
+            return None
+        try:
+            question_date = date.fromisoformat(last_used)
+        except (TypeError, ValueError):
+            return None
+        day_difference = (self._reference_date - question_date).days
+        if day_difference < self._cooldown_days:
+            return "reuse"
         return None
 
     def render(self) -> str:

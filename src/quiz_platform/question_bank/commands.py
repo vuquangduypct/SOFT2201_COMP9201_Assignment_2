@@ -38,7 +38,19 @@ class _ChangeStatusCommand(ModerationCommand):
 
     def execute(self) -> None:
         # ??? TODO fill in
-        raise NotImplementedError("??? TODO fill in")
+        if self._state != "new":
+            raise RuntimeError("only a new command can be executed")
+
+        self._previous_status = self._receiver._status_of(self._question_id)
+        self._receiver._set_status(self._question_id, self.target_status)
+        self._receiver._record_moderation(
+            "execute",
+            self.action_name,
+            self._question_id,
+            self._previous_status,
+            self.target_status,
+        )
+        self._state = "executed"
 
     def undo(self) -> None:
         """Restore the state that preceded this command's execution."""
@@ -49,7 +61,8 @@ class _ChangeStatusCommand(ModerationCommand):
         if current_status != self.target_status:
             raise RuntimeError("question status changed outside command history")
 
-        restored_status = None  # ??? TODO select the status to restore
+        # ??? TODO select the status to restore
+        restored_status = self._previous_status
 
         self._receiver._set_status(self._question_id, restored_status)
         self._receiver._record_moderation(
@@ -59,7 +72,8 @@ class _ChangeStatusCommand(ModerationCommand):
             current_status,
             restored_status,
         )
-        self._state = ""  # ??? TODO record the command's new lifecycle state
+        # ??? TODO record the command's new lifecycle state
+        self._state = "undone"
 
 class ApproveQuestionCommand(_ChangeStatusCommand):
     """Approve a question and retain enough state to undo it."""
